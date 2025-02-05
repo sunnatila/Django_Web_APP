@@ -1,0 +1,14 @@
+{% extends 'layouts/b.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ user_form }}
+        </div>
+        <button type="submit" class="btn btn-outline-success mt-3">Saqlash</button>
+    </form>
+</div>
+
+{% endblock %}

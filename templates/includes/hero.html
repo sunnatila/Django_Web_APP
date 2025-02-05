@@ -4,7 +4,7 @@
         <h1 class="font1 text-6xl title-fadein">Welcome to Django Web App site</h1>
         <p class="text-lg font-bold mb-5">Share your favorite Photos from Flickr and add a great caption</p>
         {% if not user.is_authenticated %}
-        <a class="button" href="{% url 'account_signup' %}">Get Started</a>
+        <a class="button" href="{% url 'sign_up' %}">Get Started</a>
         {% endif %}
     </div>
 </hero>

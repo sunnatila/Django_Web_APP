@@ -1,7 +1,8 @@
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Post, Tag
-from .forms import PostCreateForm, PostEditForm
+from .forms import PostCreateForm, PostEditForm, CustomUserCreationForm
 from bs4 import BeautifulSoup
 import requests
 from django.contrib import messages
@@ -35,15 +36,21 @@ def post_create_view(request):
             website = requests.get(form.data['url'])
             sourcecode = BeautifulSoup(website.text, 'html.parser')
 
+            # Image
             find_image = sourcecode.select('meta[content^="https://live.staticflickr.com/"]')
+
             image = find_image[0]['content']
             post.image = image
 
+            # Title
             find_title = sourcecode.select("h1.photo-title")
+
             title = find_title[0].text.strip()
             post.title = title
 
+            # Artist
             find_artist = sourcecode.select("a.owner-name")
+
             artist = find_artist[0].text.strip()
             post.artist = artist
 
@@ -86,3 +93,21 @@ def post_page_view(request, pk):
     post = get_object_or_404(Post, id=pk)
     return render(request, "a_posts/post_page.html", {'post': post})
 
+
+
+
+def user_register_view(request):
+    user_form = CustomUserCreationForm()
+    if request.method == "POST":
+        user_form = CustomUserCreationForm(request.POST)
+
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('login')
+
+    return render(request, "registration/sign_up.html", {"user_form": user_form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
