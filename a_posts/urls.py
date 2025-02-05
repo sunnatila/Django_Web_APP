@@ -12,6 +12,7 @@ from .views import (
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
+    # blog panel urls
     path("", home_page_view, name="home"),
     path("category/<tag>/", home_page_view, name="category"),
     path("post/create/", post_create_view, name="post_create"),
@@ -19,6 +20,7 @@ urlpatterns = [
     path("post/edit/<pk>/", post_edit_view, name="post_edit"),
     path("post/detail/<pk>/", post_page_view, name="post_page"),
 
+    # user panel urls
 
     path("accounts/signup/", user_register_view, name="sign_up"),
     path("accounts/logout/", logout_view, name="log_out"),
