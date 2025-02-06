@@ -152,3 +152,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = "/accounts/logged_out/"
+
+
+
+ACCOUNT_USERNAME_BLACKLIST = ["admin", 'accounts', 'profile', 'category', 'post']
