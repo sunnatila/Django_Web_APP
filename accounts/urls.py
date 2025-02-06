@@ -1,7 +1,12 @@
+from django.contrib.auth.views import LoginView
 from django.urls import path
-from .views import profile_view, profile_edit_view
+from .views import profile_view, profile_edit_view, user_register_view, logout_view
 
 urlpatterns = [
     path('', profile_view, name="profile"),
     path('edit/', profile_edit_view, name="profile_edit"),
+
+    path("accounts/signup/", user_register_view, name="sign_up"),
+    path("accounts/logout/", logout_view, name="log_out"),
+    path("accounts/login/", LoginView.as_view(), name="login"),
 ]

@@ -1,11 +1,13 @@
 {% extends 'layouts/d.html' %}
+{% load static %}
 {% block content %}
 <div id="profile" class="flex flex-col items-center">
 
     <div class="w-full md:w-[36rem] lg:w-[50rem]">
         <div class="card p-6">
             <div class="text-center flex flex-col items-center">
-                <img class="w-36 h-36 rounded-full object-cover mb-4" src="{{ profile.image.url }}" />
+                <img class="w-36 h-36 rounded-full object-cover mb-4" src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static 'images/avatar_default.svg' %}{% endif %}" />
+
                 <div class="text-center max-w-md">
                     <h1>{{ profile.realname }}</h1>
                     <div class="text-gray-400 mb-2 -mt-3">@{{ profile.user.username }}</div>
