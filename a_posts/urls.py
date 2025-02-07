@@ -5,9 +5,12 @@ from .views import (
     post_delete_view,
     post_edit_view,
     post_page_view,
+    comment_sent,
+    comment_delete_view,
+    reply_sent,
 
 )
-from django.contrib.auth.views import LoginView
+
 
 urlpatterns = [
     # blog panel urls
@@ -17,4 +20,10 @@ urlpatterns = [
     path("post/delete/<pk>/", post_delete_view, name="post_delete"),
     path("post/edit/<pk>/", post_edit_view, name="post_edit"),
     path("post/detail/<pk>/", post_page_view, name="post_page"),
+
+    # comment panel
+
+    path('comment/sent/<pk>/', comment_sent, name='comment_sent'),
+    path('comment/delete/<pk>/', comment_delete_view, name='comment_delete'),
+    path('comment/reply/<pk>/', reply_sent, name='reply_sent'),
 ]

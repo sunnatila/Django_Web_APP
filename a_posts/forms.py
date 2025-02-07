@@ -1,8 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from a_posts.models import Post
-
+from a_posts.models import Post, Comment, Reply
 
 
 class PostCreateForm(ModelForm):
@@ -37,3 +36,24 @@ class PostEditForm(ModelForm):
 
 
 
+class CommentCreateForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
+        labels = {
+            "body": "",
+        }
+        widgets = {
+            "body": forms.Textarea(attrs={'placeholder': 'Add comment...'}),
+        }
+
+class ReplyCreateForm(ModelForm):
+    class Meta:
+        model = Reply
+        fields = ['body']
+        labels = {
+            "body": "",
+        }
+        widgets = {
+            "body": forms.Textarea(attrs={'placeholder': 'Add reply...', 'class': '!text-sm'}),
+        }

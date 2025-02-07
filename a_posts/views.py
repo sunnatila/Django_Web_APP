@@ -2,8 +2,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .models import Post, Tag
-from .forms import PostCreateForm, PostEditForm
+from .models import Post, Tag, Comment
+from .forms import PostCreateForm, PostEditForm, CommentCreateForm, ReplyCreateForm
 from bs4 import BeautifulSoup
 import requests
 from django.contrib import messages
@@ -91,10 +91,53 @@ def post_edit_view(request, pk):
 
 def post_page_view(request, pk):
     post = get_object_or_404(Post, id=pk)
-    return render(request, "a_posts/post_page.html", {'post': post})
+    comment_form = CommentCreateForm()
+    replyform = ReplyCreateForm()
+
+
+    context = {
+        "post": post,
+        "commentform": comment_form,
+        "replyform": replyform
+    }
+
+    return render(request, "a_posts/post_page.html", context)
 
 
 
+@login_required
+def comment_sent(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    if request.method == "POST":
+        comment_form = CommentCreateForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.parent_post = post
+            comment.save()
+    return redirect('post_page', post.id)
 
 
+@login_required
+def comment_delete_view(request, pk):
+    post = get_object_or_404(Comment, id=pk, author=request.user)
+
+    if request.method == "POST":
+        post.delete()
+        messages.success(request, "Comment deleted")
+        return redirect("post_page", post.parent_post.id)
+    return render(request, "a_posts/comment_delete.html", {"comment": post})
+
+
+@login_required
+def reply_sent(request, pk):
+    comment = get_object_or_404(Comment, id=pk)
+    if request.method == "POST":
+        form = ReplyCreateForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.author = request.user
+            reply.parent_comment = comment
+            reply.save()
+    return redirect('post_page', comment.parent_post.id)
 
