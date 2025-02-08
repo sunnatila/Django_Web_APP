@@ -3,7 +3,7 @@
             <div class="flex justify-between items-center">
                 {% if comment.author %}
                 <a class="flex items-center gap-1 mb-2" href="{% url 'userprofile' comment.author.username %}' %}">
-                    <img class="w-8 h-8 object-cover rounded-full" src="{{ comment.author.profile.image.url }}">
+                    <img class="w-8 h-8 object-cover rounded-full" src="{% if comment.author.profile.image %}{{ comment.author.profile.image.url }}{%  else %}{% static 'images/avatar_default.svg' %}{% endif %}">
                     <span class="font-bold hover:underline">{{ comment.author.profile.realname }}</span>
                     <span class="text-sm font-normal text-gray-400">@{{ comment.author.username }}</span>
                 </a>
@@ -34,11 +34,7 @@
                     {% endif %}
                 </a>
                 <div class="flex items-center gap-4 [&>a:hover]:underline">
-                    <div class="flex items-center gap-1">
-                        <img class="w-5 -mt-1" src="https://img.icons8.com/small/24/000000/fire-heart.png">
-                        1
-                    </div>
-                    <a href="">Like</a>
+                    {% include 'snippets/comment_likes.html' %}
                     {% if user.is_authenticated and user == comment.author %}
                     <a href="{% url 'comment_delete' comment.id %}">Delete</a>
                     {% endif %}
