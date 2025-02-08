@@ -1,49 +1,14 @@
 {% extends 'layouts/a.html' %}
 {% load static %}
 {% block content %}
-<article class="card">
-    <div class="flex items-center justify-between px-4 h-14">
-        <h3 class="text-lg font-bold w-[50%] truncate">{{ post.title }}</h3>
-        <div class="text-sm text-gray-500">flickr @ <a href="" class="hover:underline" target="blank">{{ post.artist }}</a></div>
-    </div>
-    <figure>
-        <a href=""><img class="w-full" src="{{ post.image }}"></a>
-    </figure>
-    <div class="p-4 pb-2">
-        <a class="flex items-center gap-1 mb-4" href="{% if post.author.username %}{% url 'userprofile' post.author.username %}{% else %}{% url 'profile' %}{% endif %}">
-            <img class="w-8 h-8 object-cover rounded-full" src="{% if post.author.profile.image %}{{ post.author.profile.image.url }}{% else %}{% static 'images/avatar_default.svg' %}{% endif %}">
-            <span class="font-bold hover:underline">{{ post.author.profile.realname }}</span>
-            <span class="text-sm text-gray-400">@{{ post.author.username }}</span>
-        </a>
-        <p class="text-5xl mb-10 px-4 font1">{{ post.body }}</p>
-        <div class="flex items-center gap-2 text-sm mb-5">
-            {% for tag in post.tags.all %}
-            <a class="bg-gray-200 rounded-full px-3 py-1 hover:bg-gray-500 hover:text-white" href="">{{ tag }}</a>
-            {% endfor %}
-        </div>
-        <div class="flex items-center justify-between text-sm px-2">
-            <a class="font-bold hover:underline" href="">
-                {% if post.comments.count %}
-                Comments
-                <span class="font-light text-gray-500 ml-2">{{ post.comments.count }}</span>
-                {% else %}
-                Add comment
-                {% endif %}
-
-            </a>
-            <div class="flex items-center gap-4 [&>a:hover]:underline">
-                {% include 'snippets/likes.html' %}
-                {% if user.is_authenticated and user == post.author %}
-                <a href="{% url 'post_edit' post.id %}">Edit</a>
-                <a href="{% url 'post_delete' post.id %}">Delete</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</article>
+{% include 'a_posts/post.html' %}
 
 <div class="card !pb-0 -mt-3">
-    <form method="POST" action="{% url 'comment_sent' post.id %}" class="flex items-center p-4" autocomplete="off">
+    <form class="flex items-center p-4" autocomplete="off"
+    hx-post="{% url 'comment_sent' post.id %}"
+    hx-target="#tab-contents"
+    hx-swap="afterbegin"
+    _="on htmx:afterRequest reset() me">
         {% csrf_token %}
         {{ commentform }}
         <button @click="open = false" class="block ml-2" type="submit">Submit</button>
