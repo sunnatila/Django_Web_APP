@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # global packages
     'django_cleanup.apps.CleanupConfig',
+    "django_htmx",
 
     # local apps
     'accounts',
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 SITE_ID = 1

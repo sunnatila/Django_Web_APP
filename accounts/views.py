@@ -28,16 +28,15 @@ def logout_view(request):
 
 def profile_view(request, username=None):
     if username:
-        # Username bo'yicha foydalanuvchini olish
+        # Foydalanuvchini topish
         user = get_object_or_404(CustomUser, username=username)
     elif request.user.is_authenticated:
-        # Agar username berilmagan bo'lsa, hozirgi foydalanuvchi profilini olish
         user = request.user
     else:
         raise Http404("Sahifa topilmadi")
 
-    # Profilni signals orqali avtomatik yaratamiz, shuning uchun to'g'ridan-to'g'ri olish mumkin
-    profile = get_object_or_404(Profile, user=user)
+    # Profil obyektini olish (agar mavjud bo'lsa)
+    profile = Profile.objects.filter(user=user).first()
 
     return render(request, 'a_users/profile.html', {"profile": profile})
 

@@ -13,15 +13,17 @@
     {% endif %}
     {% if user.is_authenticated and user != reply.author %}
 
-        <a class="cursor-pointer" hx-get="{% url 'reply_like' reply.id %}"
-        hx-target="closest div"
-        hx-swap="innerHTML">
-            {% if user in reply.likes.all %}
-            <b>Liked</b>
-            {% else %}
-            Like
-            {% endif %}
-        </a>
+        {% if reply.id %}
+            <a class="cursor-pointer" hx-get="{% url 'reply_like' reply.id %}"
+               hx-target="closest div"
+               hx-swap="innerHTML">
+                {% if user in reply.likes.all %}
+                <b>Liked</b>
+                {% else %}
+                Like
+                {% endif %}
+            </a>
+        {% endif %}
 
     {% endif %}
 </div>

@@ -1,5 +1,6 @@
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -96,10 +97,16 @@ def post_page_view(request, pk):
     replyform = ReplyCreateForm()
 
 
+    if request.htmx:
+        if 'top' in request.GET:
+            comments = post.comments.annotate(num_likes=Count('likes')).filter(num_likes__gt=0).order_by('-num_likes')
+        else:
+            comments = post.comments.all()
+        return render(request, 'snippets/loop_postpage_comments.html', {'comments': comments, 'reply_form': replyform})
     context = {
         "post": post,
         "commentform": comment_form,
-        "replyform": replyform
+        "reply_form": replyform
     }
 
     return render(request, "a_posts/post_page.html", context)
@@ -146,7 +153,7 @@ def reply_sent(request, pk):
     context = {
         'reply': reply,
         "comment": comment,
-        'replyform': reply_form
+        'reply_form': reply_form
     }
     return render(request, "snippets/add_reply.html", context)
 

@@ -1,5 +1,4 @@
 {% load static %}
-
 <article class="card">
     <div class="flex items-center justify-between px-4 h-14">
         <h3 class="text-start leading-5 mr-1">{{ post.title }}</h3>
@@ -14,7 +13,7 @@
     </figure>
     <div class="p-4 pb-2">
 
-        <a class="flex items-center gap-1 mb-4" href="{% if post.author.username %}{% url 'userprofile' post.author.username %}{% else %}{% url 'profile' %}{% endif %}">
+        <a class="flex items-center gap-1 mb-4" href="{% if post.author.profile %}{% url 'userprofile' post.author.username %}{% else %}{% url 'profile' %}{% endif %}">
 
             <img class="w-8 h-8 object-cover rounded-full"
                  src="{% if post.author.profile and post.author.profile.image %}{{ post.author.profile.image.url }}{% else %}{% static 'images/avatar_default.svg' %}{% endif %}"

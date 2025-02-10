@@ -15,7 +15,7 @@ class ProfileForm(ModelForm):
         }
         widgets = {
             'image': forms.FileInput(),
-            'bio': forms.Textarea(attrs={'rows': 3})
+            'bio': forms.Textarea(attrs={'rows': 2})
         }
 
 
