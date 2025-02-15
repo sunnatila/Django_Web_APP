@@ -4,11 +4,10 @@ from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.urls import reverse
 
 from a_posts.forms import ReplyCreateForm
 from .forms import ProfileForm, CustomUserCreationForm
-from .models import CustomUser, Profile
+from .models import CustomUser
 
 
 def user_register_view(request):
