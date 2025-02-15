@@ -10,7 +10,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(
             user=instance,
             email=instance.email
-        )  # Foydalanuvchi yaratilganda Profile yaratish
+        )
     else:
         profile = get_object_or_404(Profile, user=instance)
         profile.email = instance.email
